@@ -1,0 +1,287 @@
+/* ============================================================================
+   BRAND LAYER — Tailwind v4 + shadcn/ui token template
+   ----------------------------------------------------------------------------
+   Drop this into the project's global stylesheet (globals.css / index.css),
+   replacing the existing :root / .dark token blocks. Everything downstream —
+   shadcn components, charts, sidebar — reads these tokens, so this file is the
+   single place to reskin.
+
+   To reskin:
+     1. Set --brand-hue (and --brand-accent-hue) to your hue(s).
+     2. Tune brand lightness/chroma in the --brand* block for light + dark.
+     3. Swap the font families in @theme inline and load them in the layout.
+   The neutrals, borders, sidebar, and charts all track --brand-hue, so a single
+   hue change re-tints the whole surface.
+
+   OKLCH: oklch(Lightness Chroma Hue). L 0..1 · C 0..~0.37 · H 0..360.
+   Approx hues: red 27 · amber 80 · green 150 · teal 190 · cyan 210 · blue 250
+              · indigo 264 · violet 300 · magenta 330.
+   ============================================================================ */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+/* @import "shadcn/tailwind.css";  keep this line if the project already has it */
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* ---- the one place to reskin -------------------------------------------- */
+  --brand-hue: 264; /* indigo. change this first. */
+  --brand-accent-hue: 205; /* cool cyan support, for data + the odd highlight */
+
+  --brand: oklch(0.53 0.17 var(--brand-hue));
+  --brand-foreground: oklch(0.985 0 0);
+  --brand-ring: oklch(0.62 0.14 var(--brand-hue));
+  --brand-surface: oklch(0.975 0.008 var(--brand-hue)); /* sidebar wash */
+  --brand-accent: oklch(0.68 0.12 var(--brand-accent-hue));
+  --brand-radius: 0.625rem;
+}
+
+.dark {
+  --brand: oklch(0.63 0.16 var(--brand-hue)); /* lift L for contrast on dark */
+  --brand-foreground: oklch(0.985 0 0);
+  --brand-ring: oklch(0.58 0.14 var(--brand-hue));
+  --brand-surface: oklch(0.205 0.014 var(--brand-hue));
+  --brand-accent: oklch(0.72 0.12 var(--brand-accent-hue));
+}
+
+@theme inline {
+  /* Fonts — load these in the framework layer (next/font, @font-face, ...).
+     Set --font-display to your display face; keep the sans/mono the project
+     already uses unless the images call for something else. */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-space-grotesk);
+  --font-heading: var(--font-space-grotesk);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+:root {
+  --background: oklch(0.994 0.0015 var(--brand-hue));
+  --foreground: oklch(0.21 0.018 var(--brand-hue));
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.21 0.018 var(--brand-hue));
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.21 0.018 var(--brand-hue));
+  --primary: var(--brand);
+  --primary-foreground: var(--brand-foreground);
+  --secondary: oklch(0.968 0.005 var(--brand-hue));
+  --secondary-foreground: oklch(0.28 0.02 var(--brand-hue));
+  --muted: oklch(0.968 0.005 var(--brand-hue));
+  --muted-foreground: oklch(0.53 0.02 var(--brand-hue));
+  --accent: oklch(0.955 0.012 var(--brand-hue));
+  --accent-foreground: oklch(0.28 0.03 var(--brand-hue));
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --success: oklch(0.62 0.15 150);
+  --success-foreground: oklch(0.985 0 0);
+  --warning: oklch(0.72 0.16 80);
+  --warning-foreground: oklch(0.24 0.02 80);
+  --border: oklch(0.916 0.006 var(--brand-hue));
+  --input: oklch(0.916 0.006 var(--brand-hue));
+  --ring: var(--brand-ring);
+  --chart-1: oklch(0.53 0.17 var(--brand-hue));
+  --chart-2: oklch(0.68 0.12 var(--brand-accent-hue));
+  --chart-3: oklch(0.6 0.19 300);
+  --chart-4: oklch(0.74 0.14 230);
+  --chart-5: oklch(0.72 0.15 75);
+  --radius: var(--brand-radius);
+  --sidebar: var(--brand-surface);
+  --sidebar-foreground: oklch(0.24 0.02 var(--brand-hue));
+  --sidebar-primary: var(--brand);
+  --sidebar-primary-foreground: var(--brand-foreground);
+  --sidebar-accent: oklch(0.93 0.02 var(--brand-hue));
+  --sidebar-accent-foreground: oklch(0.28 0.03 var(--brand-hue));
+  --sidebar-border: oklch(0.9 0.008 var(--brand-hue));
+  --sidebar-ring: var(--brand-ring);
+}
+
+.dark {
+  --background: oklch(0.17 0.012 var(--brand-hue));
+  --foreground: oklch(0.97 0.004 var(--brand-hue));
+  --card: oklch(0.212 0.015 var(--brand-hue));
+  --card-foreground: oklch(0.97 0.004 var(--brand-hue));
+  --popover: oklch(0.212 0.015 var(--brand-hue));
+  --popover-foreground: oklch(0.97 0.004 var(--brand-hue));
+  --primary: var(--brand);
+  --primary-foreground: var(--brand-foreground);
+  --secondary: oklch(0.27 0.014 var(--brand-hue));
+  --secondary-foreground: oklch(0.97 0.004 var(--brand-hue));
+  --muted: oklch(0.27 0.014 var(--brand-hue));
+  --muted-foreground: oklch(0.71 0.02 var(--brand-hue));
+  --accent: oklch(0.3 0.02 var(--brand-hue));
+  --accent-foreground: oklch(0.97 0.004 var(--brand-hue));
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --success: oklch(0.7 0.16 150);
+  --success-foreground: oklch(0.16 0.02 150);
+  --warning: oklch(0.8 0.15 80);
+  --warning-foreground: oklch(0.18 0.02 80);
+  --border: oklch(1 0 0 / 9%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: var(--brand-ring);
+  --chart-1: oklch(0.63 0.17 var(--brand-hue));
+  --chart-2: oklch(0.74 0.12 var(--brand-accent-hue));
+  --chart-3: oklch(0.68 0.18 300);
+  --chart-4: oklch(0.78 0.13 230);
+  --chart-5: oklch(0.78 0.15 80);
+  --sidebar: var(--brand-surface);
+  --sidebar-foreground: oklch(0.97 0.004 var(--brand-hue));
+  --sidebar-primary: var(--brand);
+  --sidebar-primary-foreground: var(--brand-foreground);
+  --sidebar-accent: oklch(0.29 0.02 var(--brand-hue));
+  --sidebar-accent-foreground: oklch(0.97 0.004 var(--brand-hue));
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: var(--brand-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background-color: color-mix(in oklch, var(--brand) 24%, transparent);
+  }
+}
+
+@layer utilities {
+  /* Display type for wordmarks, hero titles, and figures. */
+  .font-display {
+    font-family: var(--font-display), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* Quiet card hover — polish, not motion. */
+  [data-slot="card"] {
+    transition:
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+  [data-slot="card"]:hover {
+    border-color: color-mix(in oklch, var(--brand) 20%, var(--border));
+  }
+
+  /* Tactile press. */
+  [data-slot="button"]:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  /* Tab panels fade in on activation. */
+  [data-slot="tabs-content"][data-state="active"] {
+    animation: brand-fade-in 0.2s ease-out;
+  }
+  @keyframes brand-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Restrained backdrop for sign-in / landing / empty / error screens: a soft
+     brand aura over a faint dot grid. Add class="auth-backdrop" to the <main>. */
+  .auth-backdrop {
+    position: relative;
+    isolation: isolate;
+    background-color: var(--background);
+  }
+  .auth-backdrop::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(70% 55% at 50% -10%, color-mix(in oklch, var(--brand) 16%, transparent),
+        transparent 70%),
+      radial-gradient(45% 40% at 85% 12%, color-mix(in oklch, var(--brand-accent) 12%, transparent),
+        transparent 70%),
+      radial-gradient(circle at 1px 1px, color-mix(in oklch, var(--foreground) 7%, transparent) 1px,
+        transparent 0);
+    background-size:
+      auto,
+      auto,
+      24px 24px;
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 85%);
+    mask-image: linear-gradient(to bottom, black, transparent 85%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Tailwind v3 projects have no @theme. Put the same :root / .dark variables in
+   your CSS and reference them from tailwind.config.js:
+     theme: { extend: { colors: {
+       background: 'var(--background)', foreground: 'var(--foreground)',
+       primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+       // ...same for the rest
+     }, borderRadius: { lg: 'var(--radius)' } } }
+   The token values above still apply. Older shadcn presets expect HSL triplets
+   ("222 47% 11%") rather than oklch(); convert if the config wraps vars in hsl().
+   ---------------------------------------------------------------------------- */

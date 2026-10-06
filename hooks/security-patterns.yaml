@@ -1,0 +1,66 @@
+# =============================================================================
+# Security Gate Pattern Definitions
+# =============================================================================
+# Edit this file to add/remove patterns without modifying security-gate.sh
+# Used by: hooks/security-gate.sh (PreToolUse)
+
+# Completely blocked bash patterns (exit 2 = block)
+blocked_bash_patterns:
+  # Destructive filesystem operations
+  - "rm -rf /"
+  - "rm -rf ~"
+  - "rm -rf $HOME"
+  - "rm -rf /home"
+  - "mkfs"
+  - "fdisk"
+  - "dd if="
+  - "format C:"
+  # Dangerous permission changes
+  - "chmod 777"
+  - "chmod -R 777"
+  # Code execution via download (interpreter must directly follow the pipe,
+  # same pipeline segment — see security-gate.sh check_bash for the live regex)
+  - "(curl|wget)[^|]*|\\s*(sudo\\s+)?((ba|z|da)?sh|python[0-9.]*|perl|ruby)\\b"
+  # Encoded execution
+  - "base64[^|]*(-d|--decode)[^|]*|\\s*(sudo\\s+)?(ba|z|da)?sh\\b"
+  # Network exfiltration
+  - "nc -e"
+  - "ncat -e"
+
+# Warned bash patterns (allow but log warning)
+warned_bash_patterns:
+  - "sudo "
+  - "kill -9"
+  - "docker system prune"
+  - "docker volume prune"
+  - "pkill"
+  - "killall"
+  - "systemctl stop"
+  - "systemctl disable"
+
+# Blocked file paths for Write/Edit (exit 2 = block)
+blocked_write_paths:
+  - "/.ssh/"
+  - "/.aws/"
+  - "/.gnupg/"
+  - "/.config/gcloud/"
+  - "/etc/passwd"
+  - "/etc/shadow"
+  - "/etc/sudoers"
+  - "/etc/hosts"
+
+# Warned file paths for Write/Edit (allow but log warning)
+warned_write_paths:
+  - "/.bashrc"
+  - "/.zshrc"
+  - "/.profile"
+  - "/.bash_profile"
+  - "/.zprofile"
+  - "/.gitconfig"
+
+# Blocked read paths (prevent accidental secret exposure)
+blocked_read_paths:
+  - "/.ssh/id_"
+  - "/.aws/credentials"
+  - "/.gnupg/private"
+  - "/.config/gcloud/credentials"
